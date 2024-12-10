@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import db from './config/mongo'; // Arquivo com a configuração do MongoDB
+import db from './config/dbConnect'; // Arquivo com a configuração do MongoDB
 
 const app = express();
 
