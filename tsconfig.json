@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es2016",                              /* A versão do JavaScript que o compilador vai gerar. */
-    "module": "ESNext",                               /* Configura o TypeScript para gerar código compatível com ESModules. */
-    "esModuleInterop": true,                          /* Emitir código adicional para facilitar a interoperabilidade com módulos CommonJS. */
-    "forceConsistentCasingInFileNames": true,         /* Garante que o casing nos imports seja consistente. */
-    "strict": true,                                   /* Ativa todas as verificações de tipo estritas. */
-    "skipLibCheck": true,                             /* Ignora a verificação de tipos em arquivos .d.ts. */
-    "outDir": "./dist"                                /* Diretório de saída para os arquivos compilados. */
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "./dist",        // A pasta onde os arquivos compilados serão gerados
+    "baseUrl": "./src",        // A pasta base de onde os imports são relativos
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts"                                     /* Inclui todos os arquivos .ts na pasta src e subdiretórios. */
+    "src/**/*.ts"              // Incluir todos os arquivos TypeScript na pasta src
   ],
   "exclude": [
-    "node_modules"                                    /* Exclui a pasta node_modules. */
+    "node_modules"
   ]
 }

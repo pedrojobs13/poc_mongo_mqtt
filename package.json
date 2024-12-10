@@ -1,24 +1,21 @@
 {
-  "name": "poc_mqtt",
+  "name": "pocmqtt",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\" --fix",
-    "build": "tsc",  
-    "start": "node dist/index.js",
-    "dev": "npm run build && npm run start"
+    "build": "tsc",
+    "start": "node src/index.ts",
+    "dev": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-<<<<<<< Updated upstream
-  "dependencies": {
-    "dotenv": "^16.4.7"
-=======
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "eslint": "^9.16.0",
     "globals": "^15.13.0",
@@ -26,8 +23,9 @@
     "typescript-eslint": "^8.18.0"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "mongoose": "^8.8.4",
     "ts-node": "^10.9.2"
->>>>>>> Stashed changes
   }
 }
