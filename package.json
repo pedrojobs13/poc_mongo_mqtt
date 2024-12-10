@@ -4,13 +4,30 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "build": "tsc",  
+    "start": "node dist/index.js",
+    "dev": "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+<<<<<<< Updated upstream
   "dependencies": {
     "dotenv": "^16.4.7"
+=======
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ts-node": "^10.9.2"
+>>>>>>> Stashed changes
   }
 }
