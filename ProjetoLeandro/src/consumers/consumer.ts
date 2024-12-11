@@ -1,33 +1,24 @@
-import { connectRabbitMQ, getChannel } from '../config/rabbitConnect';
+import mqtt from 'mqtt';
 
-const QUEUE_NAME = 'shrimp'; 
+const BROKER_URL = 'mqtt://localhost:1883'; // Porta MQTT padrão para RabbitMQ
+const TOPIC = 'shrimp';
 
-const consumeMessages = async () => {
-    try {
-        const channel = await connectRabbitMQ(); // Estabelece a conexão e obtém o canal
+const client = mqtt.connect(BROKER_URL, {
+    clientId: 'unique-client-id',
+    clean: false
+});
 
-        await channel.assertQueue(QUEUE_NAME, {
-            durable: true // A fila sobrevive à reinicialização
-        });
+client.on('connect', () => {
+    console.log('Conectado ao broker MQTT!');
+    client.subscribe(TOPIC, { qos: 1 }, (err) => {
+        if (err) {
+            console.error('Erro ao se inscrever:', err);
+        } else {
+            console.log(`Inscrito no tópico: ${TOPIC}`);
+        }
+    });
+});
 
-        console.log(`Aguardando mensagens na fila "${QUEUE_NAME}"`);
-
-        channel.consume(QUEUE_NAME, (msg) => {
-            if (msg) {
-                const messageContent = msg.content.toString();
-                console.log(`Recebido: ${messageContent}`);
-
-                // Aqui você pode processar a mensagem, como salvar no MongoDB
-
-                // Confirma que a mensagem foi processada
-                channel.ack(msg);
-            }
-        });
-
-    } catch (error) {
-        console.error('Erro ao consumir mensagens:', error);
-    }
-};
-
-// Executa a função para iniciar o consumo de mensagens
-consumeMessages();
+client.on('message', (topic, message) => {
+    console.log(`Recebido no tópico ${topic}: ${message.toString()}`);
+});

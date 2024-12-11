@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import mqtt from 'mqtt';
+
 import { config } from 'dotenv';
 
 config();
@@ -35,8 +36,8 @@ const waitForMqttConnection = (): Promise<void> => {
 
 
             const promises = [];
-            for (let i = 0; i < 100000; i++) {
-                const messageToSend = { ...message, id: i + 1 };  // Adiciona um id único à mensagem
+            for (let i = 0; i < 2; i++) {
+                const messageToSend = { ...message, id: i + 1 };
                 promises.push(
                     new Promise<void>((resolve, reject) => {
                         client.publish(TOPIC, JSON.stringify(messageToSend), (err) => {

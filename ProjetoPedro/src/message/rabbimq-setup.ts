@@ -2,7 +2,7 @@ import client, { Channel, Connection, ConsumeMessage } from 'amqplib';
 import dotenv from "dotenv";
 
 dotenv.config();
-const QUEUE = 'pedidos';
+const QUEUE = 'shrimp';
 let connection: Connection;
 let channel: Channel;
 

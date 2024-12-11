@@ -1,6 +1,6 @@
 import mqtt from 'mqtt';
 
-const BROKER_URL = `mqtt://localhost`;
+const BROKER_URL = `mqtt://localhost:5672`;
 const TOPIC = 'shrimp';
 
 const client = mqtt.connect(BROKER_URL);
