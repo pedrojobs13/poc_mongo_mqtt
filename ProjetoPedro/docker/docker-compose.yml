@@ -18,6 +18,15 @@ services:
       - mongodb-network
     ports:
       - 27017:27017
+
+  mongov2:
+    image: mongo
+    container_name: mongodbv2
+    restart: always
+    networks:
+      -mongodb-network:
+    ports:
+      - 27018:27017
       
   mongo-express:
     image: mongo-express

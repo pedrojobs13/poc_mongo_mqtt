@@ -18,7 +18,16 @@ services:
       - mongodb-network
     ports:
       - 27017:27017
-      
+
+  mongov2:
+    image: mongo
+    container_name: mongodbv2
+    restart: always
+    networks:
+      -mongodb-network:
+    ports:
+      - 27018:27017
+
   mongo-express:
     image: mongo-express
     container_name: mongoexpress
@@ -33,7 +42,7 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-      
+
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -42,7 +51,7 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-      
+
 networks:
   mongodb-network:
     driver: bridge
