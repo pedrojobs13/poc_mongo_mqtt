@@ -1,24 +1,15 @@
-import express from 'express';
-import { Request, Response } from 'express';
-import db from './config/dbConnect'; // Arquivo com a configuração do MongoDB
+import {Request, Response, Router} from 'express';
+import {initRabbitMq, sendMessage} from './message/rabbimq-setup'
 
-const app = express();
+const router = Router();
+(async (): Promise<void> => {
+    await initRabbitMq();
+    router.post('/pedido', (req: Request, res: Response) => {
+        sendMessage(req.body)
+        res.status(200).json({ok: true, message: req.body});
+    });
 
-db.on("error", console.log.bind(console, "Erro de conexão"));
-db.once("open", () =>{
-  console.log("Conexão com o banco feita com sucesso");
-});
+})();
 
-app.use(express.json()); // Middleware para processar JSON
 
-// Rota simples de teste
-app.get('/', (req: Request, res: Response) => {
-  res.send('Olá mundo!');
-});
-
-// Rota POST para testar o echo
-app.post("/echo", (req: Request, res: Response) => {
-  res.json({ received: req.body });
-});
-
-export default app
+export default router;
