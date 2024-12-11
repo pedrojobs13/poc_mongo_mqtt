@@ -28,10 +28,10 @@ export async function consumeMessages(onMessage: (message: any) => void): Promis
             try {
                 const parsedMessage = JSON.parse(messageContent);
                 onMessage(parsedMessage);
-                channel.ack(msg); // Acknowledge the message after successful processing
+                channel.ack(msg);
             } catch (error) {
                 console.error("Failed to process message:", error);
-                channel.nack(msg, false, false); // Reject the message and do not requeue
+                channel.nack(msg, false, false);
             }
         }
     });

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   redis:
     image: "redis:alpine"
@@ -48,6 +50,13 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+      - 1883:1883
+    environment:
+      - RABBITMQ_MQTT_DEFAULT_USER=guest
+      - RABBITMQ_MQTT_DEFAULT_PASS=guest
+    command: >
+      sh -c "rabbitmq-plugins enable rabbitmq_mqtt && rabbitmq-server"
+    restart: always
 
 networks:
   mongodb-network:
