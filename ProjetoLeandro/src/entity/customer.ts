@@ -5,7 +5,7 @@ const customersSchema = new mongoose.Schema({
     name: {type: String, required: true},
     documentNumber: {type: String, required: true},
     address: {type: String, required: true}
-});
+}, { versionKey: false });
 
 const customer = mongoose.model("customers", customersSchema);
 
