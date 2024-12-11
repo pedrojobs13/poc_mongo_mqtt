@@ -1,12 +1,28 @@
 import express from "express";
 import db from "./config/dbConnect";
 import routes from "./routes/index";
+import { connectRabbitMQ } from "./config/rabbitConnect";
 
 
 db.on("error", console.log.bind(console, "Erro de conexão"));
 db.on("open", () =>{
   console.log("Conexão com o banco feita com sucesso");
 });
+
+
+const initializeRabbitMQ = async () => {
+  try {
+    await connectRabbitMQ(); // Conectar ao RabbitMQ
+    console.log("Conexão com RabbitMQ estabelecida com sucesso.");
+  } catch (error) {
+    console.error("Erro ao conectar ao RabbitMQ:", error);
+    process.exit(1); // sair da aplicação se falhar na conexão
+  }
+};
+
+// Chamar a inicialização do RabbitMQ
+initializeRabbitMQ();
+
 
 const app = express();
 routes(app);
