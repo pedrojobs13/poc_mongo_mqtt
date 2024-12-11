@@ -1,7 +1,4 @@
-version: '3.1'
-
 services:
-  
   redis:
     image: "redis:alpine"
     container_name: redis
@@ -9,7 +6,7 @@ services:
       - mongodb-network
     ports:
       - 6379:6379
-  
+
   mongo:
     image: mongo
     container_name: mongodb
@@ -24,7 +21,7 @@ services:
     container_name: mongodbv2
     restart: always
     networks:
-      -mongodb-network:
+      - mongodb-network
     ports:
       - 27018:27017
 
