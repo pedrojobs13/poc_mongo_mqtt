@@ -21,32 +21,44 @@ const router = Router();
 
 const waitForMqttConnection = (): Promise<void> => {
     return new Promise((resolve, reject) => {
-        // @ts-ignore
-        client.on('connect', resolve); // Resolve quando conectado
-        client.on('error', reject); // Rejeita em caso de erro
+        client.on('connect', () => resolve());
+        client.on('error', reject);
     });
 };
-
 (async () => {
     try {
-
         await waitForMqttConnection();
         console.log('Servidor Express iniciado.');
 
         router.post('/pedido', (req: Request, res: Response) => {
             const message = req.body;
 
-            console.log('Publicando mensagem...', message);
 
-            client.publish(TOPIC, JSON.stringify(message), (err) => {
-                if (err) {
-                    console.error('Erro ao publicar mensagem:', err);
-                    return res.status(500).json({ ok: false, message: 'Erro ao publicar mensagem' });
-                } else {
-                    console.log('Mensagem publicada com sucesso:', message);
-                    return res.status(200).json({ ok: true, message });
-                }
-            });
+            const promises = [];
+            for (let i = 0; i < 100000; i++) {
+                const messageToSend = { ...message, id: i + 1 };  // Adiciona um id único à mensagem
+                promises.push(
+                    new Promise<void>((resolve, reject) => {
+                        client.publish(TOPIC, JSON.stringify(messageToSend), (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    })
+                );
+            }
+
+            Promise.all(promises)
+                .then(() => {
+                    console.log('Todas as mensagens foram publicadas.');
+                    res.status(200).send('Mensagens publicadas.');
+                })
+                .catch((error) => {
+                    console.error('Erro ao publicar mensagens:', error);
+                    res.status(500).send('Erro ao publicar mensagens.');
+                });
         });
 
     } catch (error) {
