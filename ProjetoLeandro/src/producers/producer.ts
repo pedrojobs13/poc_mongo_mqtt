@@ -1,22 +1,30 @@
-import amqp from 'amqplib';
+import mqtt from 'mqtt';
 
-const QUEUE_NAME = 'shrimp'; // O nome da fila
+const MQTT_BROKER_URL = 'mqtt://localhost:1883'; // URL do broker
+const TOPIC_NAME = 'shrimp'; // O nome do tópico que você deseja publicar mensagens
 
-export const sendMessage = async (message: string) => {
-    try {
-        const connection = await amqp.connect('amqp://localhost:5672'); // URL do RabbitMQ
-        const channel = await connection.createChannel();
+const client = mqtt.connect(MQTT_BROKER_URL, {
+    username: 'user', // Nome de usuário (caso tenha configurado)
+    password: 'password' // Senha (caso tenha configurado)
+});
 
-        await channel.assertQueue(QUEUE_NAME, {
-            durable: true // A fila sobrevive à reinicialização
+export const sendMessage = (message: string) => {
+    client.on('connect', () => {
+        console.log('Conectado ao Broker MQTT');
+        
+        // Publica a mensagem com QoS 1 para garantir entrega
+        client.publish(TOPIC_NAME, message, { qos: 1 }, (err) => {
+            if (err) {
+                console.error('Erro ao enviar mensagem:', err);
+            } else {
+                console.log(`Mensagem enviada: ${message}`);
+            }
+
+            client.end(); // Fecha a conexão após enviar a mensagem
         });
+    });
 
-        channel.sendToQueue(QUEUE_NAME, Buffer.from(message));
-        console.log(`Mensagem enviada: ${message}`);
-
-        await channel.close();
-        await connection.close();
-    } catch (error) {
-        console.error('Erro ao enviar mensagem:', error);
-    }
+    client.on('error', (err) => {
+        console.error('Erro ao conectar-se ao Broker MQTT:', err);
+    });
 };

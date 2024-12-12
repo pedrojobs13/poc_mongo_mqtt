@@ -1,11 +1,14 @@
-import { connectRabbitMQ, getChannel } from '../config/rabbitConnect';
+// src/mqttConsumer.ts
 
-const QUEUE_NAME = 'shrimp'; 
+import { connectRabbitMQ } from '../config/rabbitConnect';
+
+const QUEUE_NAME = 'shrimp'; // O nome da fila onde você deseja ouvir mensagens
 
 const consumeMessages = async () => {
     try {
         const channel = await connectRabbitMQ(); // Estabelece a conexão e obtém o canal
 
+        // Certifique-se de que a fila existe e é durável
         await channel.assertQueue(QUEUE_NAME, {
             durable: true // A fila sobrevive à reinicialização
         });
@@ -17,13 +20,12 @@ const consumeMessages = async () => {
                 const messageContent = msg.content.toString();
                 console.log(`Recebido: ${messageContent}`);
 
-                // Aqui você pode processar a mensagem, como salvar no MongoDB
+                // Processar a mensagem aqui (ex: salvar no banco de dados)
 
                 // Confirma que a mensagem foi processada
-                channel.ack(msg);
+                channel.ack(msg); // Confirma a entrega da mensagem
             }
         });
-
     } catch (error) {
         console.error('Erro ao consumir mensagens:', error);
     }

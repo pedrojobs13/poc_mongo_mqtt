@@ -11,6 +11,3 @@ export async function fetch(req: Request, res: Response): Promise<void> {
         }
     }
 }
-
-
-
